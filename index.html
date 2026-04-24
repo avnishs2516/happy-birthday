@@ -1,0 +1,650 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, My Love 💛</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #fdf6ec;
+      --blush: #f2c4a0;
+      --rose: #d4826a;
+      --deep: #6b3a2a;
+      --gold: #c9943a;
+      --light-rose: #fae8df;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      font-family: 'Jost', sans-serif;
+      color: var(--deep);
+      overflow-x: hidden;
+    }
+
+    /* ── CANVAS FOR CONFETTI ── */
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 60% 40%, #fae3d0 0%, var(--cream) 70%);
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 80%, rgba(210,130,106,0.12) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(201,148,58,0.10) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .petal {
+      position: absolute;
+      font-size: 1.4rem;
+      opacity: 0;
+      animation: floatPetal 8s ease-in-out infinite;
+      user-select: none;
+    }
+
+    @keyframes floatPetal {
+      0%   { opacity: 0; transform: translateY(0) rotate(0deg); }
+      10%  { opacity: 0.7; }
+      90%  { opacity: 0.4; }
+      100% { opacity: 0; transform: translateY(-90vh) rotate(360deg); }
+    }
+
+    .hero-eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      letter-spacing: 0.35em;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 1s 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      line-height: 1.05;
+      color: var(--deep);
+      opacity: 0;
+      animation: fadeUp 1s 0.6s forwards;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--rose);
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-weight: 300;
+      color: var(--gold);
+      margin-top: 1rem;
+      opacity: 0;
+      animation: fadeUp 1s 0.9s forwards;
+    }
+
+    .hero-divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--rose), transparent);
+      margin: 2rem auto;
+      opacity: 0;
+      animation: fadeUp 1s 1.1s forwards;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--rose);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 1s 1.5s forwards;
+    }
+
+    .scroll-arrow {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--rose), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    /* ── SHARED SECTION STYLES ── */
+    section {
+      padding: 6rem 2rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 0.7rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 300;
+      color: var(--deep);
+      margin-bottom: 2rem;
+      line-height: 1.2;
+    }
+
+    .section-title em { font-style: italic; color: var(--rose); }
+
+    /* ── LETTER SECTION ── */
+    .letter-section { text-align: center; }
+
+    .letter-card {
+      background: #fff;
+      border: 1px solid rgba(210,130,106,0.2);
+      border-radius: 2px;
+      padding: 3rem 3.5rem;
+      box-shadow: 0 8px 40px rgba(107,58,42,0.07);
+      position: relative;
+      text-align: left;
+    }
+
+    .letter-card::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 8rem;
+      color: var(--blush);
+      position: absolute;
+      top: -1.5rem;
+      left: 2rem;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .letter-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      font-weight: 400;
+      line-height: 1.85;
+      color: var(--deep);
+    }
+
+    .letter-sig {
+      margin-top: 2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--rose);
+    }
+
+    /* ── GALLERY SECTION ── */
+    .gallery-section { text-align: center; }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .gallery-item {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--light-rose), var(--blush));
+      border-radius: 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border: 1px dashed rgba(210,130,106,0.4);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gallery-item:hover {
+      transform: scale(1.03);
+      box-shadow: 0 12px 30px rgba(107,58,42,0.12);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .gallery-item.has-image img { display: block; }
+    .gallery-item.has-image .gallery-placeholder { display: none; }
+
+    .gallery-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem;
+    }
+
+    .gallery-placeholder span:first-child { font-size: 1.8rem; }
+
+    .gallery-placeholder span:last-child {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rose);
+    }
+
+    .gallery-note {
+      margin-top: 1.2rem;
+      font-size: 0.75rem;
+      color: var(--rose);
+      letter-spacing: 0.05em;
+      font-style: italic;
+    }
+
+    /* ── MUSIC SECTION ── */
+    .music-section { text-align: center; }
+
+    .song-card {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      background: #fff;
+      border: 1px solid rgba(210,130,106,0.18);
+      border-radius: 2px;
+      padding: 1.5rem 2rem;
+      margin-top: 1.5rem;
+      box-shadow: 0 4px 20px rgba(107,58,42,0.06);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      text-align: left;
+    }
+
+    .song-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(107,58,42,0.1);
+    }
+
+    .song-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--rose), var(--gold));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .song-icon:hover { transform: scale(1.1); }
+
+    .song-info { flex: 1; }
+
+    .song-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--deep);
+    }
+
+    .song-artist {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--rose);
+      letter-spacing: 0.05em;
+      margin-top: 0.2rem;
+    }
+
+    .song-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #a06040;
+      margin-top: 0.4rem;
+    }
+
+    /* ── AUDIO PLAYER ── */
+    .audio-wrapper {
+      margin-top: 2rem;
+      position: relative;
+    }
+
+    .yt-minimal {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(107,58,42,0.12);
+      border: 1px solid rgba(210,130,106,0.2);
+    }
+
+    .yt-minimal iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .yt-hint {
+      margin-top: 0.9rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--rose);
+      text-align: center;
+    }
+
+    /* ── CONFETTI BUTTON ── */
+    .confetti-section {
+      text-align: center;
+      padding: 4rem 2rem 8rem;
+    }
+
+    .confetti-btn {
+      background: linear-gradient(135deg, var(--rose), var(--gold));
+      color: #fff;
+      border: none;
+      padding: 1rem 2.8rem;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 4px 20px rgba(212,130,106,0.35);
+    }
+
+    .confetti-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+    .confetti-btn:active { transform: translateY(0); }
+
+    .confetti-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--rose);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--blush);
+      text-transform: uppercase;
+      border-top: 1px solid rgba(210,130,106,0.15);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- HERO -->
+<div class="hero">
+  <!-- Floating petals -->
+  <div class="petal" style="left:8%;animation-delay:0s;animation-duration:9s">🌸</div>
+  <div class="petal" style="left:22%;animation-delay:2s;animation-duration:11s">✨</div>
+  <div class="petal" style="left:50%;animation-delay:1s;animation-duration:8s">🌷</div>
+  <div class="petal" style="left:70%;animation-delay:3s;animation-duration:12s">🌸</div>
+  <div class="petal" style="left:88%;animation-delay:0.5s;animation-duration:10s">✨</div>
+  <div class="petal" style="left:35%;animation-delay:4s;animation-duration:9s">🌺</div>
+  <div class="petal" style="left:60%;animation-delay:5s;animation-duration:13s">🌷</div>
+
+  <p class="hero-eyebrow">A little something, just for you</p>
+  <h1 class="hero-title">Happy <em>Birthday,</em><br>My Love</h1>
+  <p class="hero-subtitle">Wishing you a day as beautiful as you are</p>
+  <div class="hero-divider"></div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</div>
+
+<!-- LETTER -->
+<section class="letter-section reveal">
+  <p class="section-label">From the heart</p>
+  <h2 class="section-title">A note <em>for you</em></h2>
+  <div class="letter-card">
+    <p class="letter-text">
+      Every day with you feels like a gift I never knew I deserved. You make ordinary moments extraordinary just by being in them. On your birthday, I want you to know that loving you is the easiest and most beautiful thing I've ever done. Here's to you — the person who makes my world so much brighter. Happy Birthday, my love. 🎂✨
+    </p>
+    <p class="letter-sig">— Always yours</p>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section reveal">
+  <p class="section-label">Our moments</p>
+  <h2 class="section-title">A little <em>gallery</em></h2>
+  <div class="gallery-grid">
+    <div class="gallery-item">
+      <img src="" alt="Memory 1">
+      <div class="gallery-placeholder">
+        <span>📷</span>
+        <span>Add photo</span>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <img src="" alt="Memory 2">
+      <div class="gallery-placeholder">
+        <span>📷</span>
+        <span>Add photo</span>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <img src="" alt="Memory 3">
+      <div class="gallery-placeholder">
+        <span>📷</span>
+        <span>Add photo</span>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <img src="" alt="Memory 4">
+      <div class="gallery-placeholder">
+        <span>📷</span>
+        <span>Add photo</span>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <img src="" alt="Memory 5">
+      <div class="gallery-placeholder">
+        <span>📷</span>
+        <span>Add photo</span>
+      </div>
+    </div>
+    <div class="gallery-item">
+      <img src="" alt="Memory 6">
+      <div class="gallery-placeholder">
+        <span>📷</span>
+        <span>Add photo</span>
+      </div>
+    </div>
+  </div>
+  <p class="gallery-note">✦ Replace the placeholder images with your own photos before publishing ✦</p>
+</section>
+
+<!-- MUSIC -->
+<section class="music-section reveal">
+  <p class="section-label">Songs for you</p>
+  <h2 class="section-title">A song <em>dedicated</em><br>to you</h2>
+
+  <div class="song-card">
+    <div class="song-info">
+      <div class="song-title">Perfect</div>
+      <div class="song-artist">Ed Sheeran</div>
+      <div class="song-note">Because you are, in every way. 💛</div>
+    </div>
+  </div>
+
+  <div class="audio-wrapper">
+    <div class="yt-minimal">
+      <iframe
+        src="https://www.youtube.com/embed/2Vv-BfVoq4g?rel=0&modestbranding=1&color=white"
+        title="Ed Sheeran – Perfect"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+    <p class="yt-hint">🎵 Press play to listen while you explore the page</p>
+  </div>
+</section>
+
+<!-- CONFETTI -->
+<div class="confetti-section reveal">
+  <p class="confetti-label">Ready to celebrate? 🎉</p>
+  <button class="confetti-btn" onclick="launchConfetti()">Celebrate! ✨</button>
+</div>
+
+<footer>Made with love, just for you &nbsp;·&nbsp; Happy Birthday 🎂</footer>
+
+<script>
+  // ── SCROLL REVEAL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => observer.observe(r));
+
+  // ── CONFETTI ──
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+  let animating = false;
+
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const COLORS = ['#d4826a','#c9943a','#f2c4a0','#e8a87c','#fae3d0','#b5545a','#f7d794'];
+
+  function createParticle() {
+    return {
+      x: Math.random() * canvas.width,
+      y: -10,
+      r: Math.random() * 7 + 3,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      speed: Math.random() * 3 + 2,
+      swing: Math.random() * 2 - 1,
+      angle: Math.random() * Math.PI * 2,
+      spin: (Math.random() - 0.5) * 0.2,
+      shape: Math.random() > 0.5 ? 'rect' : 'circle',
+      w: Math.random() * 10 + 5,
+      h: Math.random() * 6 + 3,
+    };
+  }
+
+  function drawParticle(p) {
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.angle);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = 0.85;
+    if (p.shape === 'circle') {
+      ctx.beginPath();
+      ctx.arc(0, 0, p.r, 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    }
+    ctx.restore();
+  }
+
+  function animate() {
+    if (!animating) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p, i) => {
+      p.y += p.speed;
+      p.x += Math.sin(p.y * 0.03) * p.swing;
+      p.angle += p.spin;
+      drawParticle(p);
+      if (p.y > canvas.height + 20) particles.splice(i, 1);
+    });
+    if (particles.length === 0) { animating = false; ctx.clearRect(0, 0, canvas.width, canvas.height); return; }
+    requestAnimationFrame(animate);
+  }
+
+  function launchConfetti() {
+    particles = [];
+    for (let i = 0; i < 220; i++) particles.push(createParticle());
+    if (!animating) { animating = true; animate(); }
+  }
+
+  // Auto-launch gently on load
+  setTimeout(() => { for (let i = 0; i < 80; i++) particles.push(createParticle()); animating = true; animate(); }, 1600);
+</script>
+</body>
+</html>
